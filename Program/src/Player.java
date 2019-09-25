@@ -85,15 +85,14 @@ public class Player {
             boolean isPlayersCard = false;
             while (!isPlayersCard) {
                 String s = input.next();
+                System.out.print("Choose one of your cards: ");
+                this.ShowCards();
                 for(int i = 0; i < this.cards.length; i++) {
                     if(this.cards[i] == s) {
                         card = this.cards[i];
                         isPlayersCard = true;
                         System.out.println("You chose: " + card);
                         break;
-                    }
-                    if(i == this.cards.length && isPlayersCard == false) {
-                        System.out.println("It seems like you don't have this card in. Try again");
                     }
                 }
             }
