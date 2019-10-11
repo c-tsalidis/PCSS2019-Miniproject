@@ -10,17 +10,17 @@ public class Deck {
 
 
         for (int i = 0; i < 10; i++) {
-            list.add(new Card(i, "blue"));
-            list.add(new Card(i, "red"));
-            list.add(new Card(i, "green"));
-            list.add(new Card(i, "yellow"));
+            list.add(new Card(Integer.toString(i), "blue"));
+            list.add(new Card(Integer.toString(i), "red"));
+            list.add(new Card(Integer.toString(i), "green"));
+            list.add(new Card(Integer.toString(i), "yellow"));
         }
 
         for (int i = 1; i < 10; i++) {
-            list.add(new Card(i, "blue"));
-            list.add(new Card(i, "red"));
-            list.add(new Card(i, "green"));
-            list.add(new Card(i, "yellow"));
+            list.add(new Card(Integer.toString(i), "blue"));
+            list.add(new Card(Integer.toString(i), "red"));
+            list.add(new Card(Integer.toString(i), "green"));
+            list.add(new Card(Integer.toString(i), "yellow"));
         }
         for (int i = 0; i< 2; i++){
             list.add(new Card("Skip","blue"));

@@ -5,11 +5,12 @@ public class Card {
 
     public Card(){
 
-    }
+    }/*
     public Card(int name, String colour){
         this.name=name;
         this.colour=colour;
     }
+    */
     public Card(String type, String colour){
         this.type=type;
         this.colour=colour;
