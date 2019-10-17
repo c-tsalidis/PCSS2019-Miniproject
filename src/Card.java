@@ -5,7 +5,8 @@ public class Card {
 
     public Card(){
 
-    }/*
+    }
+    /*
     public Card(int name, String colour){
         this.name=name;
         this.colour=colour;
