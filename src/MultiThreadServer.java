@@ -7,7 +7,7 @@ import java.util.Date;
 public class MultiThreadServer {
     public static void main(String[] args) {
         // create a new thread to not stop the main thread from waiting and stopping the program for every connection
-        new Thread(() -> {
+        new Thread( () -> {
             try {
                 int clientNumber = 0;
                 // Create a server socket

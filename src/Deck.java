@@ -2,20 +2,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Deck {
-
-    public static void main(String[] args) {
-
-        //Creating the deck
-        ArrayList<Card> list = new ArrayList<Card>();
-
-
+    // Creating the deck
+    private ArrayList<Card> list = new ArrayList<Card>();
+    public ArrayList<Card> getDeck() {
+        return list;
+    }
+    public void CreateDeck() {
         for (int i = 0; i < 10; i++) {
             list.add(new Card(Integer.toString(i), "blue"));
             list.add(new Card(Integer.toString(i), "red"));
             list.add(new Card(Integer.toString(i), "green"));
             list.add(new Card(Integer.toString(i), "yellow"));
         }
-
         for (int i = 1; i < 10; i++) {
             list.add(new Card(Integer.toString(i), "blue"));
             list.add(new Card(Integer.toString(i), "red"));
@@ -40,7 +38,7 @@ public class Deck {
             list.add(new Card("Choose colour", "Uncolored"));
             list.add(new Card("+4", "Uncolored"));
         }
-
+        /*
         for (int i = 0; i < 76; i++) {
             System.out.println("index number " + i);
             System.out.println(list.get(i).getName());
@@ -53,7 +51,6 @@ public class Deck {
             System.out.println(list.get(i).getColour());
             System.out.println();
         }
-
+        */
     }
-
 }
