@@ -90,47 +90,17 @@ class PlayerClientHandler implements Runnable {
                     System.out.println("Welcome message sent to " + playerName + " --> Player number " + this.playerNumber);
                     playerInfoSet = true;
                 }
+                // tell the client whether or not the game is ready
+                outputToClient.writeBoolean(this.gameReady);
                 if(this.gameReady) {
-                    // tell the client that the game is ready
-                    outputToClient.writeBoolean(true);
-                }
-                else {
-                    // tell the client that the game is not ready yet
-                    outputToClient.writeBoolean(false);
-                }
-                while(this.gameReady) {
-                    /*
-                    if(!this.firstMoveMade) {
-
-                        if(this.playerNumber == 1) {
-                            this.isTurn = true;
-                            this.firstMoveMade = true;
-                        }
-                        else {
-                            this.isTurn = false;
-                        }
-                     }
-                     */
+                    // tell the player whether or not it's his turn to play
+                    outputToClient.writeBoolean(this.isTurn);
                     if(this.isTurn) {
-                        // tell the player that it's his turn to play
-                        outputToClient.writeBoolean(true);
-                        // read if the player has done his move yet
-                        this.moveMade = inputFromClient.readBoolean();
-                    }
-                    else {
-                        // tell the user that it's not his turn to play
-                        outputToClient.writeBoolean((false));
+                        String move = inputFromClient.readUTF();
+                        this.UpdateGameState(move);
+                        this.moveMade = true;
                     }
                 }
-                /*
-                if(gameStarted) {
-                    // tell the client that the game has started
-                    outputToClient.writeBoolean(true);
-                }
-                else {
-                    outputToClient.writeBoolean(false);
-                }
-                 */
                 // to check if the connection is still active
                 connect = inputFromClient.readBoolean();
             }
@@ -138,5 +108,9 @@ class PlayerClientHandler implements Runnable {
         catch(IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void UpdateGameState(String message) {
+        System.out.println(message);
     }
 }

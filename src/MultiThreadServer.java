@@ -11,6 +11,7 @@ public class MultiThreadServer {
     private int minimumPlayers = 2;
     private boolean gameStarted;
     private boolean firstMoveMade = false;
+    private boolean isMinimumPlayers = false;
 
     public int GetClientNumber() {
         return this.clientNumber;
@@ -29,26 +30,18 @@ public class MultiThreadServer {
                     Socket socket = serverSocket.accept();
                     // There is a new client, so increment the clients counter
                     this.clientNumber++;
-                    System.out.println("Starting thread for client " + this.clientNumber + " at " + new Date());
-                    // Find the client's host name, and IP address
-                    InetAddress inetAddress = socket.getInetAddress();
-                    System.out.println("Client " + this.clientNumber + "'s host name is " + inetAddress.getHostName());
-                    System.out.println("Client " + this.clientNumber + "'s IP Address is " + inetAddress.getHostAddress());
-                    // create a new PlayerClientHandler
-                    PlayerClientHandler playerClientHandler = new PlayerClientHandler(socket, this.clientNumber);
-                    // Create and start a new thread for the connection
-                    new Thread(playerClientHandler).start();
-                    // add it to the playersHandler list
-                    playerHandlers.add(playerClientHandler);
-                    while (this.clientNumber == this.minimumPlayers) {
-                        // System.out.println("Game has started because there are " + this.minimumPlayers + " minimum amount of players");
-                        if (!gameStarted) {
-                            for (int i = 0; i < this.playerHandlers.size(); i++) {
-                                // the game is ready, and therefore it starts
-                                this.playerHandlers.get(i).setGameReady(true);
-                            }
+                    // set up a new thread for the new client (socket)
+                    this.SetupThreadForClient(socket);
+                    // check if there minimum amount of players are connected, and if so, start the game
+                    if(!this.isMinimumPlayers) {
+                        if (this.clientNumber == this.minimumPlayers) {
+                            this.isMinimumPlayers = true;
                         }
-                        UpdateTurns();
+                    }
+                    // if there are the minimum amount of players connected, then play the game
+                    while (this.isMinimumPlayers) {
+                        this.SetGameAsReady();
+                        this.UpdateTurns();
                     }
                 }
             } catch (IOException ex) {
@@ -57,37 +50,73 @@ public class MultiThreadServer {
         }).start();
     }
 
-    public void UpdateTurns() {
+    private void SetGameAsReady() {
+        if (!this.gameStarted) {
+            for (int i = 0; i < this.playerHandlers.size(); i++) {
+                // the game is ready, and therefore it starts
+                this.playerHandlers.get(i).setGameReady(true);
+            }
+        }
+    }
+
+    private void SetupThreadForClient(Socket socket) {
+        System.out.println("Starting thread for client " + this.clientNumber + " at " + new Date());
+        // Find the client's host name, and IP address
+        InetAddress inetAddress = socket.getInetAddress();
+        System.out.println("Client " + this.clientNumber + "'s host name is " + inetAddress.getHostName());
+        System.out.println("Client " + this.clientNumber + "'s IP Address is " + inetAddress.getHostAddress());
+        // create a new PlayerClientHandler
+        PlayerClientHandler playerClientHandler = new PlayerClientHandler(socket, this.clientNumber);
+        // Create and start a new thread for the connection
+        new Thread(playerClientHandler).start();
+        // add it to the playersHandler list
+        playerHandlers.add(playerClientHandler);
+    }
+
+    private void UpdateTurns() {
+        int playerTurn = 0;
+        // if the first move has already been made, then update the turns.
         if(this.firstMoveMade) {
             // manage the turns of every player
             for (int i = 0; i < this.playerHandlers.size(); i++) {
                 PlayerClientHandler player = this.playerHandlers.get(i);
                 if (player.isMoveMade()) {
-                    System.out.println(player.getPlayerName() + " has made his move");
+                    this.UpdateGameState(player.getPlayerName() + " has made his move");
                     if (i < (this.playerHandlers.size() - 1)) {
-                        this.playerHandlers.get(i + 1).setTurn(true);
-                        System.out.println("It's player " + this.playerHandlers.get(i + 1).getPlayerNumber() + "'s turn");
+                        playerTurn = i + 1;
                     } else {
-                        this.playerHandlers.get(0).setTurn(true);
-                        System.out.println("It's player " + this.playerHandlers.get(0).getPlayerNumber() + "'s turn");
+
+                        playerTurn = 0;
                     }
+                    this.UpdateGameState("It's " + this.playerHandlers.get(playerTurn).getPlayerName() + "'s turn");
                     player.setTurn(false);
                     player.setMoveMade(false);
-                } else {
-                    // player.setTurn(false);
-                    // player.setMoveMade(false);
                 }
             }
         }
+        // if the first move has not been made, then set the turn to the first player
         else {
             // if(this.playerHandlers.get(0).isFirstMoveMade()) this.firstMoveMade = false;
             if(this.playerHandlers.get(0).isMoveMade()) {
                 this.firstMoveMade = true;
+                playerTurn = 1;
+                this.playerHandlers.get(playerTurn).setTurn(true);
+                this.playerHandlers.get(0).setTurn(false);
             }
             else {
-                this.playerHandlers.get(0).setTurn(true);
-                System.out.println("It's " + this.playerHandlers.get(0).getPlayerName() + "'s turn");
+                playerTurn = 0;
+                this.playerHandlers.get(playerTurn).setTurn(true);
             }
         }
+    }
+    
+    private void UpdateGameState(String gameState) {
+        System.out.println(gameState);
+        /*
+        for (int i = 0; i < playerHandlers.size(); i++) {
+            PlayerClientHandler player = playerHandlers.get(i);
+            player.UpdateGameState(gameState);
+        }
+         */
     }
 }

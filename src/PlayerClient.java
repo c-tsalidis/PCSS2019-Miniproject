@@ -9,7 +9,7 @@ public class PlayerClient {
         int playerNumber = 0;
         boolean connect = true;
         boolean playerInfoSet = false;
-        boolean gameStarted = false;
+        boolean gameReady = false;
         boolean isPlayersTurn = false;
         try {
             // Create a socket to connect to the server
@@ -35,32 +35,17 @@ public class PlayerClient {
                     playerInfoSet = true;
                 }
                 // read the input that the game is ready to start
-                gameStarted = inputFromServer.readBoolean();
-                while (gameStarted) {
+                gameReady = inputFromServer.readBoolean();
+                if(gameReady) {
                     isPlayersTurn = inputFromServer.readBoolean();
                     if(isPlayersTurn) {
                         // ask the user to write his move
                         System.out.println("it's your turn " + name + " - These are your cards. Pick one of them:");
                         String move = input.nextLine();
                         // tell the server that the move has been made
-                        outputToServer.writeBoolean(true);
-                    }
-                    else {
-                        // tell the server that the move has not been made yet
-                        outputToServer.writeBoolean(false);
+                        outputToServer.writeUTF(move);
                     }
                 }
-
-                /*
-                gameStarted = inputFromServer.readBoolean();
-                // if the game has started
-                if (gameStarted) {
-                    System.out.println("The game has started!!");
-                }
-                else {
-                    System.out.println("The game has not started yet");
-                }
-                 */
 
                 // send the connect boolean to the client player handler
                 outputToServer.writeBoolean(connect);
