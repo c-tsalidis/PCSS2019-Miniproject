@@ -14,6 +14,7 @@ class PlayerClientHandler implements Runnable {
     }
 
     private String playerName = "Anonymous";
+    /*
     // has the first move been made?
     private boolean firstMoveMade;
     public boolean isFirstMoveMade() {
@@ -22,6 +23,8 @@ class PlayerClientHandler implements Runnable {
     public void setFirstMoveMade(boolean firstMoveMade) {
         this.firstMoveMade = firstMoveMade;
     }
+
+     */
     private boolean isTurn; // is it the player's turn?
     public boolean isTurn() {
         return isTurn;
@@ -96,14 +99,18 @@ class PlayerClientHandler implements Runnable {
                     outputToClient.writeBoolean(false);
                 }
                 while(this.gameReady) {
-                    // if(this.firstMoveMade) {
+                    /*
+                    if(!this.firstMoveMade) {
+
                         if(this.playerNumber == 1) {
                             this.isTurn = true;
+                            this.firstMoveMade = true;
                         }
                         else {
                             this.isTurn = false;
                         }
-                    // }
+                     }
+                     */
                     if(this.isTurn) {
                         // tell the player that it's his turn to play
                         outputToClient.writeBoolean(true);
@@ -111,6 +118,7 @@ class PlayerClientHandler implements Runnable {
                         this.moveMade = inputFromClient.readBoolean();
                     }
                     else {
+                        // tell the user that it's not his turn to play
                         outputToClient.writeBoolean((false));
                     }
                 }

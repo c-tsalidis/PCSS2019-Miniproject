@@ -40,9 +40,7 @@ public class PlayerClient {
                     isPlayersTurn = inputFromServer.readBoolean();
                     if(isPlayersTurn) {
                         // ask the user to write his move
-                        System.out.println("it's your turn: " + name);
-                        System.out.println("These are your cards " + name + ":");
-                        System.out.println("Pick one of your cards:");
+                        System.out.println("it's your turn " + name + " - These are your cards. Pick one of them:");
                         String move = input.nextLine();
                         // tell the server that the move has been made
                         outputToServer.writeBoolean(true);

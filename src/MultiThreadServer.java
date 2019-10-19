@@ -10,10 +10,7 @@ public class MultiThreadServer {
     private ArrayList<PlayerClientHandler> playerHandlers;
     private int minimumPlayers = 2;
     private boolean gameStarted;
-    private boolean firstMoveMade;
-    public void setFirstMoveMade (boolean _move) {
-        this.firstMoveMade = _move;
-    }
+    private boolean firstMoveMade = false;
 
     public int GetClientNumber() {
         return this.clientNumber;
@@ -61,7 +58,7 @@ public class MultiThreadServer {
     }
 
     public void UpdateTurns() {
-        if(!firstMoveMade) {
+        if(this.firstMoveMade) {
             // manage the turns of every player
             for (int i = 0; i < this.playerHandlers.size(); i++) {
                 PlayerClientHandler player = this.playerHandlers.get(i);
@@ -80,6 +77,16 @@ public class MultiThreadServer {
                     // player.setTurn(false);
                     // player.setMoveMade(false);
                 }
+            }
+        }
+        else {
+            // if(this.playerHandlers.get(0).isFirstMoveMade()) this.firstMoveMade = false;
+            if(this.playerHandlers.get(0).isMoveMade()) {
+                this.firstMoveMade = true;
+            }
+            else {
+                this.playerHandlers.get(0).setTurn(true);
+                System.out.println("It's " + this.playerHandlers.get(0).getPlayerName() + "'s turn");
             }
         }
     }
