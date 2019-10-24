@@ -8,7 +8,7 @@ import java.util.Date;
 public class MultiThreadServer {
     private int clientNumber = 0;
     private ArrayList<PlayerClientHandler> playerHandlers;
-    private int minimumPlayers = 2;
+    private int minimumPlayers = 3;
     private boolean gameStarted;
     private boolean firstMoveMade = false;
     private boolean isMinimumPlayers = false;
@@ -111,23 +111,6 @@ public class MultiThreadServer {
 
             }
         }
-        /*
-        // pause all the threads if it's not the player's turn
-        for (int i = 0; i < playerHandlers.size(); i++) {
-            PlayerClientHandler player = this.playerHandlers.get(i);
-            if(!player.isTurn()) {
-                try {
-                    player.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-
-                player.notify();
-            }
-        }
-         */
     }
     
     private void UpdateGameState(String gameState) {

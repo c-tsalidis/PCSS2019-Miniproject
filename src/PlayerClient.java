@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerClient {
     public static void main(String[] args) {
@@ -33,6 +34,7 @@ public class PlayerClient {
                     String serverMessage = inputFromServer.readUTF();
                     System.out.println(serverMessage);
                     playerInfoSet = true;
+                    outputToServer.flush();
                 }
                 // read the input that the game is ready to start
                 gameReady = inputFromServer.readBoolean();
@@ -44,6 +46,8 @@ public class PlayerClient {
                         String move = input.nextLine();
                         // tell the server that the move has been made
                         outputToServer.writeUTF(move);
+                        isPlayersTurn = false;
+                        outputToServer.flush();
                     }
                 }
 

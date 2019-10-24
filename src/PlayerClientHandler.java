@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 // Define the thread class for handling new connection
 class PlayerClientHandler implements Runnable {
@@ -14,17 +15,6 @@ class PlayerClientHandler implements Runnable {
     }
 
     private String playerName = "Anonymous";
-    /*
-    // has the first move been made?
-    private boolean firstMoveMade;
-    public boolean isFirstMoveMade() {
-        return firstMoveMade;
-    }
-    public void setFirstMoveMade(boolean firstMoveMade) {
-        this.firstMoveMade = firstMoveMade;
-    }
-
-     */
     private boolean isTurn; // is it the player's turn?
     public boolean isTurn() {
         return isTurn;
@@ -65,7 +55,6 @@ class PlayerClientHandler implements Runnable {
     // Run a thread
     public void run() {
         try {
-
             // Create data input and output streams
             DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
             DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
@@ -90,6 +79,7 @@ class PlayerClientHandler implements Runnable {
                     outputToClient.writeUTF(welcomeMessage);
                     System.out.println("Welcome message sent to " + playerName + " --> Player number " + this.playerNumber);
                     playerInfoSet = true;
+                    outputToClient.flush();
                 }
                 // tell the client whether or not the game is ready
                 outputToClient.writeBoolean(this.gameReady);
@@ -98,8 +88,10 @@ class PlayerClientHandler implements Runnable {
                     outputToClient.writeBoolean(this.isTurn);
                     if(this.isTurn) {
                         String move = inputFromClient.readUTF();
-                        this.UpdateGameState(move);
+                        System.out.println(move);
                         this.moveMade = true;
+                        this.isTurn = false;
+                        outputToClient.flush();
                     }
                 }
                 // to check if the connection is still active
@@ -112,6 +104,6 @@ class PlayerClientHandler implements Runnable {
     }
 
     public void UpdateGameState(String message) {
-        System.out.println(message);
+
     }
 }
