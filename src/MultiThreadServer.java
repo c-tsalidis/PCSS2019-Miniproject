@@ -89,9 +89,11 @@ public class MultiThreadServer {
                         playerTurn = 0;
                     }
                     this.UpdateGameState("It's " + this.playerHandlers.get(playerTurn).getPlayerName() + "'s turn");
+                    this.playerHandlers.get(playerTurn).setTurn(true);
                     player.setTurn(false);
                     player.setMoveMade(false);
                 }
+
             }
         }
         // if the first move has not been made, then set the turn to the first player
@@ -106,8 +108,26 @@ public class MultiThreadServer {
             else {
                 playerTurn = 0;
                 this.playerHandlers.get(playerTurn).setTurn(true);
+
             }
         }
+        /*
+        // pause all the threads if it's not the player's turn
+        for (int i = 0; i < playerHandlers.size(); i++) {
+            PlayerClientHandler player = this.playerHandlers.get(i);
+            if(!player.isTurn()) {
+                try {
+                    player.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+
+                player.notify();
+            }
+        }
+         */
     }
     
     private void UpdateGameState(String gameState) {

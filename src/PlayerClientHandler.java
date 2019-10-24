@@ -65,6 +65,7 @@ class PlayerClientHandler implements Runnable {
     // Run a thread
     public void run() {
         try {
+
             // Create data input and output streams
             DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
             DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
