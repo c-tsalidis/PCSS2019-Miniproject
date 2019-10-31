@@ -81,7 +81,7 @@ public class MultiThreadServer {
             for (int i = 0; i < this.playerHandlers.size(); i++) {
                 PlayerClientHandler player = this.playerHandlers.get(i);
                 if (player.isMoveMade()) {
-                    this.UpdateGameState(player.getPlayerName() + " has made his move");
+                    this.UpdateGameState(player.getPlayerName() + " has made their move");
                     if (i < (this.playerHandlers.size() - 1)) {
                         playerTurn = i + 1;
                     } else {
