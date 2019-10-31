@@ -66,6 +66,7 @@ class PlayerClientHandler implements Runnable {
                 if(!playerInfoSet) {
                     // send the player number to the client
                     outputToClient.writeInt(this.playerNumber);
+                    outputToClient.flush();
 
                     // Receive name of the player from the PlayerClient
                     playerName = inputFromClient.readUTF();
@@ -77,9 +78,10 @@ class PlayerClientHandler implements Runnable {
 
                     // Send results back to the client
                     outputToClient.writeUTF(welcomeMessage);
+                    outputToClient.flush();
                     System.out.println("Welcome message sent to " + playerName + " --> Player number " + this.playerNumber);
                     playerInfoSet = true;
-                    outputToClient.flush();
+
                 }
                 // tell the client whether or not the game is ready
                 outputToClient.writeBoolean(this.gameReady);
@@ -87,6 +89,7 @@ class PlayerClientHandler implements Runnable {
                 if(this.gameReady) {
                     // tell the player whether or not it's his turn to play
                     outputToClient.writeBoolean(this.isTurn);
+                    outputToClient.flush();
                     if(this.isTurn) {
                         String move = inputFromClient.readUTF();
                         System.out.println(move);

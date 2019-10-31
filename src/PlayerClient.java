@@ -29,13 +29,14 @@ public class PlayerClient {
 
                     // Send the player name to the server
                     outputToServer.writeUTF(name);
+                    outputToServer.flush();
 
                     // get the message from the server welcoming the player
                     String serverMessage = inputFromServer.readUTF();
                     System.out.println(serverMessage);
                     playerInfoSet = true;
-                    outputToServer.flush();
                 }
+
                 // read the input that the game is ready to start
                 gameReady = inputFromServer.readBoolean();
                 if(gameReady) {
@@ -46,8 +47,8 @@ public class PlayerClient {
                         String move = input.nextLine();
                         // tell the server that the move has been made
                         outputToServer.writeUTF(move);
-                        isPlayersTurn = false;
                         outputToServer.flush();
+                        isPlayersTurn = false;
                     }
                 }
 
