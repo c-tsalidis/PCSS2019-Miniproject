@@ -83,11 +83,13 @@ class PlayerClientHandler implements Runnable {
                 }
                 // tell the client whether or not the game is ready
                 outputToClient.writeBoolean(this.gameReady);
+                outputToClient.flush();
                 if(this.gameReady) {
+                    String move = null;
                     // tell the player whether or not it's his turn to play
                     outputToClient.writeBoolean(this.isTurn);
                     if(this.isTurn) {
-                        String move = inputFromClient.readUTF();
+                        move = inputFromClient.readUTF();
                         System.out.println(move);
                         this.moveMade = true;
                         this.isTurn = false;

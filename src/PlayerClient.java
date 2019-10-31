@@ -40,6 +40,7 @@ public class PlayerClient {
                 gameReady = inputFromServer.readBoolean();
                 if(gameReady) {
                     isPlayersTurn = inputFromServer.readBoolean();
+
                     if(isPlayersTurn) {
                         // ask the user to write his move
                         System.out.println("it's your turn " + name + " - These are your cards. Pick one of them:");
@@ -49,6 +50,7 @@ public class PlayerClient {
                         isPlayersTurn = false;
                         outputToServer.flush();
                     }
+                    else if((input.nextLine() != null)) System.out.println("Not your turn to play");
                 }
 
                 // send the connect boolean to the client player handler

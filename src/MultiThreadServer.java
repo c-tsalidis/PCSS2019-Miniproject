@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Semaphore;
 
 public class MultiThreadServer {
     private int clientNumber = 0;
@@ -12,6 +13,8 @@ public class MultiThreadServer {
     private boolean gameStarted;
     private boolean firstMoveMade = false;
     private boolean isMinimumPlayers = false;
+
+
 
     public int GetClientNumber() {
         return this.clientNumber;
@@ -24,6 +27,7 @@ public class MultiThreadServer {
             try {
                 // Create a server socket
                 ServerSocket serverSocket = new ServerSocket(8000);
+                Semaphore sem = new Semaphore(1);
                 System.out.println("MultiThreadServer started at: " + new Date());
                 while (true) {
                     // Listen for a new connection request --> it doesn't execute the rest of the code until it accepts a new client connection
@@ -44,7 +48,7 @@ public class MultiThreadServer {
                         this.UpdateTurns();
                     }
                 }
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 System.err.println(ex);
             }
         }).start();
@@ -79,21 +83,26 @@ public class MultiThreadServer {
         if(this.firstMoveMade) {
             // manage the turns of every player
             for (int i = 0; i < this.playerHandlers.size(); i++) {
-                PlayerClientHandler player = this.playerHandlers.get(i);
-                if (player.isMoveMade()) {
-                    this.UpdateGameState(player.getPlayerName() + " has made his move");
-                    if (i < (this.playerHandlers.size() - 1)) {
-                        playerTurn = i + 1;
-                    } else {
+                try {
 
-                        playerTurn = 0;
+                    PlayerClientHandler player = this.playerHandlers.get(i);
+                    if (player.isMoveMade()) {
+                        this.UpdateGameState(player.getPlayerName() + " has made his move");
+                        if (i < (this.playerHandlers.size() - 1)) {
+                            playerTurn = i + 1;
+                        } else {
+
+                            playerTurn = 0;
+                        }
+                        this.UpdateGameState("It's " + this.playerHandlers.get(playerTurn).getPlayerName() + "'s turn");
+                        this.playerHandlers.get(playerTurn).setTurn(true);
+                        player.setTurn(false);
+                        player.setMoveMade(false);
+
                     }
-                    this.UpdateGameState("It's " + this.playerHandlers.get(playerTurn).getPlayerName() + "'s turn");
-                    this.playerHandlers.get(playerTurn).setTurn(true);
-                    player.setTurn(false);
-                    player.setMoveMade(false);
+                }catch (Exception ex) {
+                    System.out.println(ex);
                 }
-
             }
         }
         // if the first move has not been made, then set the turn to the first player
