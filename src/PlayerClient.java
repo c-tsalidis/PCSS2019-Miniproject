@@ -24,7 +24,7 @@ public class PlayerClient {
                     // get the player number from the server
                     playerNumber = inputFromServer.readInt();
                     // Enter the player's name
-                    System.out.print("Enter your name player " + playerNumber + ": ");
+                    System.out.print("Enter your name " + playerNumber + ": ");
                     name = input.nextLine();
 
                     // Send the player name to the server
@@ -43,7 +43,7 @@ public class PlayerClient {
                     isPlayersTurn = inputFromServer.readBoolean();
                     if(isPlayersTurn) {
                         // ask the user to write his move
-                        System.out.println("it's your turn " + name + " - These are your cards. Pick one of them:");
+                        System.out.println("it's your turn " + name + " Write a message to your buddies");
                         String move = input.nextLine();
                         // tell the server that the move has been made
                         outputToServer.writeUTF(move);

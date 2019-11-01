@@ -72,9 +72,9 @@ class PlayerClientHandler implements Runnable {
                     playerName = inputFromClient.readUTF();
 
                     String welcomeMessage = "Welcome to the server " + playerName + "! \n " +
-                            "You are player number " + this.playerNumber + " \n " +
+                            "You are number " + this.playerNumber + " \n " +
                             "Your info is now correctly set up in the server" + " \n " +
-                            "Please wait while other players connect - Thanks for your patience!";
+                            "Please wait while your other buddies connect - Thanks for your patience!";
 
                     // Send results back to the client
                     outputToClient.writeUTF(welcomeMessage);
