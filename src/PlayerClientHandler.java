@@ -63,6 +63,11 @@ class PlayerClientHandler implements Runnable {
             boolean playerInfoSet = false;
             // Continuously serve the client
             while (connect) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if(!playerInfoSet) {
                     // send the player number to the client
                     outputToClient.writeInt(this.playerNumber);

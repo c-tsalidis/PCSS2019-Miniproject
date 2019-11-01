@@ -40,6 +40,11 @@ public class MultiThreadServer {
                     }
                     // if there are the minimum amount of players connected, then play the game
                     while (this.isMinimumPlayers) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         this.SetGameAsReady();
                         this.UpdateTurns();
                     }
