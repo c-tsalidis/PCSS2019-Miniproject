@@ -52,6 +52,17 @@ class PlayerClientHandler implements Runnable {
         this.socket = socket;
         this.playerNumber = playerNumber;
     }
+
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+    }
+
+    private String gameState;
+
     // Run a thread
     public void run() {
         try {
@@ -101,18 +112,16 @@ class PlayerClientHandler implements Runnable {
                         this.moveMade = true;
                         this.isTurn = false;
                         outputToClient.flush();
+                        MultiThreadServer.UpdateGameState(move);
                     }
+                    if(this.gameState != null) outputToClient.writeUTF(this.gameState);
+                    outputToClient.flush();
                 }
-                // to check if the connection is still active
                 connect = inputFromClient.readBoolean();
             }
         }
         catch(IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public void UpdateGameState(String message) {
-
     }
 }

@@ -12,6 +12,7 @@ public class PlayerClient {
         boolean playerInfoSet = false;
         boolean gameReady = false;
         boolean isPlayersTurn = false;
+        String gameState = null;
         try {
             // Create a socket to connect to the server
             Socket connectToServer = new Socket("localhost", 8000);
@@ -48,8 +49,12 @@ public class PlayerClient {
                         // tell the server that the move has been made
                         outputToServer.writeUTF(move);
                         outputToServer.flush();
+
                         isPlayersTurn = false;
                     }
+
+                    gameState = inputFromServer.readUTF();
+                    if(gameState != null) System.out.println(gameState);
                 }
 
                 // send the connect boolean to the client player handler
