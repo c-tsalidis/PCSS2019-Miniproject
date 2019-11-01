@@ -112,7 +112,6 @@ class PlayerClientHandler implements Runnable {
                         this.moveMade = true;
                         this.isTurn = false;
                         outputToClient.flush();
-                        MultiThreadServer.UpdateGameState(move);
                     }
                     if(this.gameState != null) outputToClient.writeUTF(this.gameState);
                     outputToClient.flush();

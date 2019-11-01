@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class MultiThreadServer {
     private int clientNumber = 0;
-    private static ArrayList<PlayerClientHandler> playerHandlers;
+    private ArrayList<PlayerClientHandler> playerHandlers;
     private int minimumPlayers = 3;
     private boolean gameStarted;
     private boolean firstMoveMade = false;
@@ -86,14 +86,14 @@ public class MultiThreadServer {
             for (int i = 0; i < this.playerHandlers.size(); i++) {
                 PlayerClientHandler player = this.playerHandlers.get(i);
                 if (player.isMoveMade()) {
-                    System.out.println(player.getPlayerName() + " has made their move");
+                    this.UpdateGameState(player.getPlayerName() + " has made their move");
                     if (i < (this.playerHandlers.size() - 1)) {
                         playerTurn = i + 1;
                     } else {
 
                         playerTurn = 0;
                     }
-                    System.out.println("It's " + this.playerHandlers.get(playerTurn).getPlayerName() + "'s turn");
+                    this.UpdateGameState("It's " + this.playerHandlers.get(playerTurn).getPlayerName() + "'s turn");
                     this.playerHandlers.get(playerTurn).setTurn(true);
                     player.setTurn(false);
                     player.setMoveMade(false);
@@ -118,11 +118,12 @@ public class MultiThreadServer {
         }
     }
     
-    public static void UpdateGameState(String gameState) {
+    public void UpdateGameState(String gameState) {
         System.out.println("Updated game state - " + gameState);
+        /*
         for (int i = 0; i < playerHandlers.size(); i++) {
             PlayerClientHandler player = playerHandlers.get(i);
             if(gameState != null) player.setGameState(gameState);
-        }
+        }*/
     }
 }

@@ -52,9 +52,6 @@ public class PlayerClient {
 
                         isPlayersTurn = false;
                     }
-
-                    gameState = inputFromServer.readUTF();
-                    if(gameState != null) System.out.println(gameState);
                 }
 
                 // send the connect boolean to the client player handler
